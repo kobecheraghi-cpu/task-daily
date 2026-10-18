@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>مرکز فرماندهی مطالعه</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0e6e8c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مطالعه">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 :root{--bg:#f5f6f8;--card:#fff;--ink:#16202b;--mut:#5f6b78;--line:#dde2e8;--ac:#0e6e8c;--acs:#dff1f6;--p0:#c0392b;--p1:#c77d0a;--p2:#4f6fa8;--p3:#7a8591;--ok:#2a8a57;color-scheme:light}
 [data-t=dark]{--bg:#0e141b;--card:#171f29;--ink:#e6ebf0;--mut:#9aa6b2;--line:#2b3644;--ac:#52b4d1;--acs:#183543;--p0:#ef7a6b;--p1:#e3a64a;--p2:#86a4d8;--p3:#9aa6b2;--ok:#5cc58b;color-scheme:dark}
@@ -199,6 +206,11 @@ case'im':{const f=el.files[0];if(!f)break;const r=new FileReader();r.onload=()=>
 if(confirm('داده‌های فعلی با این فایل جایگزین شود؟ (انصراف = گزینه‌ی ادغام)')){S=norm(p)}else if(confirm('به‌جای جایگزینی، تسک‌ها، تفریح، استثناها و مرورها با داده‌ی فعلی ادغام شوند؟')){const q=norm(p);const m=(a,b)=>[...a,...b.filter(x=>!a.some(y=>y.id&&y.id==x.id))];S.tasks=m(S.tasks,q.tasks);S.leisure=m(S.leisure,q.leisure);S.exc=[...S.exc,...q.exc.filter(x=>!S.exc.some(y=>JSON.stringify(y)==JSON.stringify(x)))];S.reviews={...q.reviews,...S.reviews}}else return;save();render();toast('داده‌ها وارد شدند.')};r.readAsText(f);el.value='';break}}});
 document.addEventListener('submit',e=>{const f=e.target;if(f.dataset.f!=='qa')return;e.preventDefault();const t=f.t.value.trim();if(!t)return;S.tasks.push({id:uid(),t,desc:'',cat:'',due:today(),dur:S.set.dur,pri:+f.pri.value,done:0,fb:'',cond:'',pre:''});save();render()});
 load();render();
+</script>
+<script>
+/* PWA: register the service worker (scope = this folder) and ask the browser to keep local data. */
+if('serviceWorker' in navigator){addEventListener('load',()=>{navigator.serviceWorker.register('service-worker.js',{scope:'./'}).catch(()=>{});});}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 </script>
 </body>
 </html>
