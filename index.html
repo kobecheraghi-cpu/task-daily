@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مرکز فرماندهی مطالعه</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#16202b;--mut:#5f6b78;--line:#dde2e8;--ac:#0e6e8c;--acs:#dff1f6;--p0:#c0392b;--p1:#c77d0a;--p2:#4f6fa8;--p3:#7a8591;--ok:#2a8a57;color-scheme:light}
+[data-t=dark]{--bg:#0e141b;--card:#171f29;--ink:#e6ebf0;--mut:#9aa6b2;--line:#2b3644;--ac:#52b4d1;--acs:#183543;--p0:#ef7a6b;--p1:#e3a64a;--p2:#86a4d8;--p3:#9aa6b2;--ok:#5cc58b;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}.row>label select,.row>label input{display:inline-block;width:auto}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 Vazirmatn,IRANSans,"Segoe UI",Tahoma,system-ui,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header h1{font-size:17px;margin:0}nav{display:flex;gap:4px;overflow-x:auto;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:49px;z-index:4}
+nav button{white-space:nowrap;border:0;background:none;color:var(--mut);padding:6px 12px;border-radius:8px;font:inherit;cursor:pointer}nav button.on{background:var(--acs);color:var(--ac);font-weight:700}
+main{max-width:1000px;margin:0 auto;padding:16px}h2{font-size:21px;margin:0 0 12px}h3{font-size:16px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}.g{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.sp{justify-content:space-between}.mut{color:var(--mut);font-size:13px}
+button,input,select,textarea{font:inherit;color:var(--ink)}input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:6px 9px;max-width:100%}
+textarea{width:100%;min-height:70px}label{display:block;margin-bottom:8px}label input,label select,label textarea{display:block;width:100%}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:5px 11px;cursor:pointer}.btn.p{background:var(--ac);border-color:var(--ac);color:#fff}.btn.d{color:var(--p0)}.btn.s{padding:2px 8px;font-size:13px}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}input[type=checkbox]{width:18px;height:18px;accent-color:var(--ac)}
+.bar{height:9px;background:var(--line);border-radius:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);transition:width .3s}.bar.m i{background:var(--ok)}
+.tk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}.tk:last-child{border:0}.tk.dn .tt{text-decoration:line-through;color:var(--mut)}.tk>div{flex:1}
+.b{display:inline-block;font-size:12px;border-radius:5px;padding:0 7px;border:1px solid currentColor;margin-inline-start:4px}.p0{color:var(--p0)}.p1{color:var(--p1)}.p2{color:var(--p2)}.p3{color:var(--p3)}
+.blk{display:flex;gap:10px;padding:6px 10px;border-inline-start:4px solid var(--line);margin:4px 0;background:var(--bg);border-radius:6px}.blk.fixed{border-color:var(--ac)}.blk.study{border-color:var(--ok)}.blk.leisure{border-color:var(--p1)}.blk.buffer{border-color:var(--p3);opacity:.85}.blk.optional{border-style:dashed}.blk.meal{border-color:var(--p2)}.blk time{min-width:92px;direction:ltr;text-align:right;color:var(--mut);font-size:13px}.blk>div{flex:1}
+.stg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}.stg label{display:flex;gap:5px;align-items:center;margin:0;font-size:13px}.stg input{width:auto}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);width:min(440px,94vw)}dialog::backdrop{background:#0008}
+#toast{position:fixed;bottom:16px;inset-inline-start:16px;background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}#toast.on{opacity:1}
+.warn{background:#c77d0a22;border:1px solid var(--p1);border-radius:8px;padding:8px 12px;margin-bottom:10px}.emp{text-align:center;color:var(--mut);padding:18px}
+table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:6px;border-bottom:1px solid var(--line)}.big{font-size:30px;font-weight:700}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>مرکز فرماندهی مطالعه</h1><div class="row"><span id="sv" class="mut"></span><button class="btn s" data-a="theme" aria-label="تغییر پوسته">☾ / ☀</button></div></header>
+<nav id="nav"></nav><main id="m"></main><dialog id="dlg"></dialog><div id="toast" role="status"></div>
+<script>
+'use strict';
+const KEY='study_app_v1',SUBJ=['شیمی','حسابان','هندسه','آمار و احتمال','فیزیک'],STG=['ویدیو دیده شد','مفهوم فهمیده شد','تمرین و تست انجام شد','مرور شد','مسلط شد'],
+PRI=['بحرانی','مهم','قابل‌تعویق','اختیاری'],DAYS=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'],
+MODES={full:['هدف کامل',180],min:['حداقل مؤثر',90],rec:['بازیابی',105],rest:['روز استراحت',0]},
+TYPES={fixed:'ثابت (محافظت‌شده)',study:'مطالعه',meal:'وعده/استراحت',leisure:'تفریح',buffer:'بافر',optional:'اختیاری'},
+LT=['فیلم و سریال','تلگرام و دوستان','یوتیوب','اسکرول شبکه‌های اجتماعی','بازی','بیرون رفتن/دید و بازدید','استراحت بی‌برنامه'],
+SC=[['A','خروج ناگهانی ۱۸ تا ۲۰',null,['تسک بحرانی امروز را به بازه‌ی ۲۰:۴۵ ببر.','بلوک آخر و تسک‌های اختیاری را حذف کن.','فردا طبق برنامه‌ی عادی؛ بدون جبران اضافه.']],
+['B','امتحان مدرسه‌ی فردا',null,['درس امتحان را بحرانی کن و ۲ تا ۳ بلوک بده.','سایر درس‌ها فقط در حد حداقل.','بعد از امتحان یک روز سبک و سپس برنامه‌ی عادی.']],
+['C','مهمانی یا مهمانی خانوادگی','min',['روز را «حداقل» بگیر: یک بلوک ۴۵ دقیقه‌ای قبل از رفتن.','تسک‌های قابل‌تعویق و اختیاری حذف شوند.','تسک مهم را به جمعه ببر.']],
+['D','اهمال‌کاری (قابل‌اجتناب)',null,['تسک بحرانی را همان شب با نسخه‌ی کوچک‌تر انجام بده.','یک تأمل دو دقیقه‌ای بنویس.','پیامد را از پیشنهادهای ملایم انتخاب کن؛ اجباری نیست.']],
+['E','خستگی واقعی','min',['روز را حداقل یا استراحت کن و زود بخواب.','فقط یک تسک ۳۰ دقیقه‌ای نگه دار.','فردا با سطح حداقل شروع کن.']],
+['F','از دست دادن یک روز کامل','rec',['۳۰ دقیقه تریاژ: تسک‌های عقب‌افتاده را اولویت‌بندی کن.','فقط بحرانی‌ها را در روز بازیابی انجام بده.','قابل‌تعویق‌ها به هفته‌ی بعد؛ اختیاری‌ها حذف.']],
+['G','هفته‌ی سنگین امتحان و تکلیف','min',['«هفته‌ی بحران» اعلام کن: حدود ۹۰ دقیقه در روز.','علم داده ثابت می‌ماند.','هفته‌ی بعد تدریجی برگرد.']]];
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
+fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]),uid=()=>Math.random().toString(36).slice(2,9),
+iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),
+pd=s=>{const[a,b,c]=s.split('-');return new Date(+a,b-1,+c)},add=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)},
+today=()=>iso(new Date()),didx=s=>(pd(s).getDay()+1)%7,wk=s=>add(s,-didx(s)),tm=s=>{const[a,b]=s.split(':');return+a*60+ +b},
+pf=(s,o)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).formatToParts(pd(s)).map(x=>[x.type,x.value]));return[p.weekday&&p.weekday+'،',p.day,p.month,p.year].filter(Boolean).join(' ')},pdate=s=>pf(s,{year:'numeric',month:'long',day:'numeric'}),
+hm=m=>fa(Math.floor(m/60))+':'+fa(String(m%60).padStart(2,'0')),dur=m=>m>=60?fa(Math.floor(m/60))+' ساعت'+(m%60?' و '+fa(m%60)+' دقیقه':''):fa(m)+' دقیقه';
+const DEADLINE='2027-07-22';
+function defBlocks(){const b=[],a=(day,s,e,title,type)=>b.push({id:uid(),day,s,e,title,type});
+const m=[['فیزیک',null],['حسابان','شیمی'],['شیمی','هندسه'],['هندسه','آمار و احتمال'],['فیزیک','آمار و احتمال']];
+for(let d=0;d<5;d++){a(d,'07:00','14:00','مدرسه','fixed');a(d,'14:00','15:30','رفت‌وآمد، ناهار و استراحت','meal');a(d,'15:30',d?'17:15':'17:00','مطالعه: '+m[d][0]+' (یادگیری + تمرین)','study');
+if(d){a(d,'17:45','20:00','پنجره‌ی تفریح و خروج (جابه‌جاپذیر)','leisure');a(d,'20:00','20:45','شام','meal');a(d,'20:45','21:30','مطالعه: '+m[d][1]+' (تمرین/مرور)','study');a(d,'21:30','22:15',d==4?'تکلیف مدرسه یا مرور سبک':'مرور تجمعی یا تکلیف مدرسه','study');a(d,'22:15','22:45','بافر و آماده‌ی خواب','buffer')}
+else{a(d,'17:30','18:45','شام و استراحت','meal');a(d,'19:00','22:30','علم داده و کدنویسی','fixed')}}
+a(5,'10:00','12:00','آزمون یک درس + تحلیل خطا','study');a(5,'12:30','14:00','ناهار و استراحت','meal');a(5,'14:00','18:00','علم داده و کدنویسی','fixed');
+a(6,'10:00','12:30','مرور هفتگی و جبران درس عقب‌مانده','study');a(6,'17:00','18:30','بلوک اختیاری','optional');a(6,'19:00','21:30','تفریح و خانواده','leisure');
+b.forEach(x=>{if(x.type=='fixed')x.locked=1});return b}
+const def=()=>({v:1,theme:'light',start:today(),blocks:defBlocks(),tasks:[
+{id:uid(),t:'ثبت فصل‌ها و جلسه‌های ماز در بخش دروس',desc:'پیشنهاد اولیه (قابل ویرایش)',cat:'برنامه‌ریزی',due:today(),dur:30,pri:1,done:0,fb:'فقط یک درس را شروع کن',cond:'حداقل یک درس تعریف شده',pre:''},
+{id:uid(),t:'اولین تمرین پایتون را انجام بده',desc:'پیشنهاد اولیه (قابل ویرایش)',cat:'علم داده',due:today(),dur:45,pri:2,done:0,fb:'',cond:'',pre:''}],
+subj:Object.fromEntries(SUBJ.map(s=>[s,{chapters:[{id:uid(),n:'فصل ۱',lessons:[],st:[0,0,0,0,0],at:[],tests:[]}],goal:0}])),
+ds:{topic:'Python',goals:'',items:[],notes:''},ci:{},log:{},leisure:[],exc:[],reviews:{},
+set:{target:180,limit:120,wake:'07:00',wakeGoal:'06:00',sleep:'23:00',dur:45},ui:{tab:'today',subj:SUBJ[0],tf:'today',fp:'',fc:'',day:null}});
+let S;function load(){try{const p=JSON.parse(localStorage.getItem(KEY));S=norm(p)}catch(e){S=def()}}
+function norm(p){const d=def();if(!p||typeof p!=='object')return d;const r={...d,...p};['set','ui','ds'].forEach(k=>r[k]={...d[k],...(p[k]||{})});
+['tasks','blocks','leisure','exc'].forEach(k=>{if(!Array.isArray(r[k]))r[k]=d[k]});['ci','log','reviews','subj'].forEach(k=>{if(!r[k]||typeof r[k]!=='object')r[k]=d[k]});
+SUBJ.forEach(s=>{if(!r.subj[s]||!Array.isArray(r.subj[s].chapters))r.subj[s]=d.subj[s];r.subj[s].chapters.forEach(c=>{c.lessons=c.lessons||[];c.st=c.st||[0,0,0,0,0];c.at=c.at||[];c.tests=c.tests||[]})});return r}
+let st;function save(){try{localStorage.setItem(KEY,JSON.stringify(S));$('#sv').textContent='ذخیره شد ✓';clearTimeout(st);st=setTimeout(()=>$('#sv').textContent='',1500)}catch(e){toast('ذخیره‌سازی ممکن نشد (حافظه‌ی مرورگر پر یا بسته است).')}}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2800)}
+function form(title,fields,cb){const d=$('#dlg');d.returnValue='';d.innerHTML=`<form method="dialog"><h3>${title}</h3>${fields.map(f=>`<label>${f.l}${f.o?`<select name="${f.k}">${f.o.map(o=>{const v=Array.isArray(o)?o[0]:o,l=Array.isArray(o)?o[1]:o;return`<option value="${esc(v)}"${String(f.v)==String(v)?' selected':''}>${esc(l)}</option>`}).join('')}</select>`:f.a?`<textarea name="${f.k}">${esc(f.v)}</textarea>`:`<input name="${f.k}" type="${f.t||'text'}" value="${esc(f.v)}"${f.t=='number'?' min="0"':''}>`}</label>`).join('')}<div class="row"><button class="btn p" value="ok">ذخیره</button><button class="btn" value="x" formnovalidate>انصراف</button></div></form>`;
+d.onclose=()=>{if(d.returnValue==='ok'){const v=Object.fromEntries(new FormData(d.querySelector('form')));const e=cb(v);if(e)toast(e);else{save();render()}}};d.showModal()}
+const bar=(p,c='')=>`<div class="bar ${c}" role="progressbar" aria-valuenow="${Math.round(p)}"><i style="width:${Math.max(0,Math.min(100,p))}%"></i></div>`,pc=(a,b)=>b?Math.round(100*a/b):0;
+const TABS=[['today','امروز'],['week','برنامه‌ی هفتگی'],['courses','دروس'],['tasks','تسک‌ها'],['deadline','ددلاین'],['ds','علم داده'],['exc','استثناها و پیامد'],['leisure','تفریح'],['review','مرور هفتگی'],['settings','تنظیمات']];
+function render(){document.documentElement.dataset.t=S.theme;$('#nav').innerHTML=TABS.map(t=>`<button data-a="tab" data-v="${t[0]}"${S.ui.tab==t[0]?' class="on" aria-current="page"':''}>${t[1]}</button>`).join('');$('#m').innerHTML=V[S.ui.tab]();}
+const mode=d=>(S.ci[d]||{}).mode||'full',target=d=>MODES[mode(d)][1]*(S.set.target/180)|0;
+const dayBlocks=d=>S.blocks.filter(b=>b.day==didx(d)).sort((a,b)=>tm(a.s)-tm(b.s));
+const blk=(b,ed)=>`<div class="blk ${b.type}"><time>${hm(tm(b.s))}–${hm(tm(b.e))}</time><div>${esc(b.title)} <span class="mut">${TYPES[b.type]}</span></div>${ed?(b.locked?'<span class="mut">🔒</span>':`<button class="btn s" data-a="be" data-id="${b.id}">ویرایش</button><button class="btn s d" data-a="bd" data-id="${b.id}">حذف</button>`):''}</div>`;
+const tkRow=t=>`<div class="tk${t.done?' dn':''}"><input type="checkbox" data-c="tg" data-id="${t.id}"${t.done?' checked':''} aria-label="انجام شد"><div><div class="tt">${esc(t.t)}<span class="b p${t.pri}">${PRI[t.pri]}</span></div><div class="mut">${esc(t.cat||'')}${t.due?' · '+pdate(t.due):''}${t.dur?' · '+dur(t.dur):''}${t.cond?' · شرط تکمیل: '+esc(t.cond):''}${t.fb?' · نسخه‌ی کوچک: '+esc(t.fb):''}${t.pre?' · پیش‌نیاز: '+esc(t.pre):''}</div>${t.desc?`<div class="mut">${esc(t.desc)}</div>`:''}</div><div class="row"><button class="btn s" data-a="te" data-id="${t.id}">ویرایش</button><button class="btn s" data-a="tp" data-id="${t.id}">+۱ روز</button><button class="btn s d" data-a="td" data-id="${t.id}">حذف</button></div></div>`;
+const overdue=()=>S.tasks.filter(t=>!t.done&&t.due&&t.due<today());
+const V={
+today(){const d=today(),tg=target(d),ac=S.log[d]||0,tk=S.tasks.filter(t=>!t.done||t.due==d).filter(t=>t.due==d).sort((a,b)=>a.pri-b.pri),od=overdue(),c=S.ci[d]||{},ev=S.tasks.filter(t=>!t.done&&t.due>d&&t.due<=add(d,3));
+return`<h2>${pf(d,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</h2>
+<div class="card"><div class="row sp"><div><div class="big">${dur(ac)}</div><span class="mut">از هدف امروز: ${dur(tg)} (${MODES[mode(d)][0]})</span></div><div class="row"><button class="btn" data-a="lg" data-v="15">+۱۵ دقیقه</button><button class="btn" data-a="lg" data-v="45">+۴۵ دقیقه</button><button class="btn" data-a="lgc">ثبت دستی</button></div></div>${bar(pc(ac,tg))}
+<div class="row" style="margin-top:10px"><label style="margin:0">حالت امروز <select data-c="mode">${Object.entries(MODES).map(([k,v])=>`<option value="${k}"${mode(d)==k?' selected':''}>${v[0]}</option>`).join('')}</select></label><button class="btn" data-a="ci">چک‌این روزانه</button></div>
+${c.energy?`<div class="mut">انرژی: ${esc(c.energy)} · وقت آزاد: ${esc(c.avail||'—')} · مهم‌ترین تسک: ${esc(c.top||'—')} · حواس‌پرتی: ${esc(c.dist||'—')}</div>`:''}</div>
+${od.length?`<div class="warn">${fa(od.length)} تسک عقب‌افتاده داری. این‌ها خودکار به امروز منتقل نمی‌شوند؛ در «تسک‌ها» بازبینی و اولویت‌بندی کن.</div>`:''}
+<div class="g"><div class="card"><h3>تسک‌های امروز</h3><form data-f="qa" class="row"><input name="t" placeholder="تسک جدید..." required style="flex:1"><select name="pri">${PRI.map((p,i)=>`<option value="${i}"${i==1?' selected':''}>${p}</option>`).join('')}</select><button class="btn p">افزودن</button></form>${tk.length?tk.map(tkRow).join(''):'<div class="emp">تسکی برای امروز نیست. یکی اضافه کن یا استراحت کن.</div>'}</div>
+<div class="card"><h3>برنامه‌ی امروز</h3>${dayBlocks(d).map(b=>blk(b)).join('')||'<div class="emp">بلوکی نیست.</div>'}</div></div>
+<div class="card"><h3>در راه</h3>${ev.length?ev.map(t=>`<div>${esc(t.t)} <span class="mut">${pdate(t.due)}</span></div>`).join(''):'<span class="mut">در سه روز آینده تسکی با موعد نیست.</span>'}</div>`},
+week(){const d=S.ui.day??didx(today()),cf=conflicts();
+return`<h2>برنامه‌ی هفتگی</h2>${cf.length?`<div class="warn">تداخل: ${cf.map(esc).join('، ')}</div>`:''}<div class="row" style="margin-bottom:10px">${DAYS.map((n,i)=>`<button class="btn${d==i?' p':''}" data-a="day" data-v="${i}">${n}</button>`).join('')}<button class="btn${d=='all'?' p':''}" data-a="day" data-v="all">نمای هفتگی</button><button class="btn" data-a="ba">+ بلوک جدید</button></div>
+${d=='all'?`<div class="g">${DAYS.map((n,i)=>`<div class="card"><h3>${n}</h3>${S.blocks.filter(b=>b.day==i).sort((a,b)=>tm(a.s)-tm(b.s)).map(b=>blk(b)).join('')}</div>`).join('')}</div>`:`<div class="card"><h3>${DAYS[d]}</h3>${S.blocks.filter(b=>b.day==d).sort((a,b)=>tm(a.s)-tm(b.s)).map(b=>blk(b,1)).join('')||'<div class="emp">بلوکی نیست.</div>'}</div>`}
+<p class="mut">بلوک‌های مدرسه و علم داده قفل‌اند. خواب: حدود ${S.set.sleep} تا ${S.set.wake}، با هدف تدریجی ${S.set.wakeGoal}.</p>`},
+courses(){const sj=S.ui.subj,o=S.subj[sj],ch=o.chapters;
+return`<h2>دروس</h2><div class="row" style="margin-bottom:10px">${SUBJ.map(s=>`<button class="btn${s==sj?' p':''}" data-a="sj" data-v="${s}">${s} ${fa(subjPct(s,0))}٪</button>`).join('')}</div>
+<div class="card"><div class="row sp"><h3>${sj}</h3><button class="btn p" data-a="ca">+ فصل</button></div>${[0,1,2,3,4].map(i=>`<div class="row">${bar(pc(ch.filter(c=>c.st[i]).length,ch.length),i==4?'m':'')}<span class="mut" style="min-width:150px">${STG[i]}: ${fa(pc(ch.filter(c=>c.st[i]).length,ch.length))}٪</span></div>`).join('')}
+<p class="mut">پیشرفت کلی (ویدیو) و تسلط جداگانه‌اند. معیار تسلط پیشنهادی: حدود ۸۰٪ پاسخ درست و مرور تأخیری موفق.</p></div>
+${ch.map((c,i)=>{const lt=c.lessons.reduce((a,l)=>a+(+l.min||0),0),ld=c.lessons.filter(l=>l.done).reduce((a,l)=>a+(+l.min||0),0),lt2=c.tests[c.tests.length-1];
+return`<div class="card"><div class="row sp"><h3>${esc(c.n)}</h3><div class="row"><button class="btn s" data-a="cu" data-id="${c.id}">↑</button><button class="btn s" data-a="cdn" data-id="${c.id}">↓</button><button class="btn s" data-a="cr" data-id="${c.id}">تغییر نام</button><button class="btn s d" data-a="cd" data-id="${c.id}">حذف</button></div></div>
+<div class="stg">${STG.map((s,k)=>`<label><input type="checkbox" data-c="st" data-id="${c.id}" data-k="${k}"${c.st[k]?' checked':''}>${s}</label>`).join('')}</div>
+<div class="mut">جلسه‌ها: ${fa(c.lessons.filter(l=>l.done).length)} از ${fa(c.lessons.length)} · زمان: ${dur(ld)} از ${dur(lt)}${lt2?' · آخرین آزمون: '+fa(lt2.s)+'٪'+(lt2.s<80?' (کمتر از ۸۰٪)':''):''}</div>
+${c.lessons.map(l=>`<div class="tk${l.done?' dn':''}"><input type="checkbox" data-c="ls" data-id="${c.id}" data-l="${l.id}"${l.done?' checked':''} aria-label="جلسه دیده شد"><div class="tt">${esc(l.n)} <span class="mut">${dur(+l.min||0)}</span></div><button class="btn s" data-a="le" data-id="${c.id}" data-l="${l.id}">ویرایش</button><button class="btn s d" data-a="ld" data-id="${c.id}" data-l="${l.id}">حذف</button></div>`).join('')}
+<div class="row" style="margin-top:8px"><button class="btn" data-a="la" data-id="${c.id}">+ جلسه</button><button class="btn" data-a="ta2" data-id="${c.id}">ثبت نتیجه‌ی آزمون</button></div>${c.tests.length?`<div class="mut">آزمون‌ها: ${c.tests.map(t=>fa(t.s)+'٪ ('+pdate(t.d)+')').join('، ')}</div>`:''}</div>`}).join('')||'<div class="emp">فصلی نیست؛ یکی اضافه کن.</div>'}`},
+tasks(){const f=S.ui.tf,d=today(),L=S.tasks.filter(t=>f=='today'?!t.done&&t.due==d:f=='up'?!t.done&&t.due>d:f=='done'?t.done:f=='over'?!t.done&&t.due&&t.due<d:1).filter(t=>S.ui.fp===''||t.pri==S.ui.fp).filter(t=>!S.ui.fc||t.cat==S.ui.fc).sort((a,b)=>a.pri-b.pri||(a.due||'z').localeCompare(b.due||'z')),cats=[...new Set(S.tasks.map(t=>t.cat).filter(Boolean))];
+return`<h2>تسک‌ها</h2><div class="row" style="margin-bottom:10px">${[['today','امروز'],['up','آینده'],['over','عقب‌افتاده'],['done','انجام‌شده'],['all','همه']].map(x=>`<button class="btn${f==x[0]?' p':''}" data-a="tf" data-v="${x[0]}">${x[1]}</button>`).join('')}
+<select data-c="fp" aria-label="اولویت"><option value="">همه‌ی اولویت‌ها</option>${PRI.map((p,i)=>`<option value="${i}"${S.ui.fp===String(i)?' selected':''}>${p}</option>`).join('')}</select><select data-c="fc" aria-label="دسته"><option value="">همه‌ی دسته‌ها</option>${cats.map(c=>`<option${S.ui.fc==c?' selected':''}>${esc(c)}</option>`).join('')}</select><button class="btn p" data-a="tn">+ تسک کامل</button></div>
+<div class="card">${L.length?L.map(tkRow).join(''):'<div class="emp">تسکی در این نما نیست.</div>'}</div>`},
+deadline(){const d=today(),days=Math.ceil((pd(DEADLINE)-pd(d))/864e5),w=Math.max(days/7,0),el=Math.max((pd(d)-pd(S.start))/6048e5,0);
+const rows=SUBJ.map(s=>{const ch=S.subj[s].chapters,v=ch.filter(c=>c.st[0]).length,pl=Math.min(Math.round(el*(S.subj[s].goal||0)),ch.length),rem=ch.flatMap(c=>c.lessons).filter(l=>!l.done).reduce((a,l)=>a+(+l.min||0),0),tot=ch.flatMap(c=>c.lessons).length;
+return`<tr><td>${s}</td><td>${fa(v)} از ${fa(ch.length)}</td><td>${S.subj[s].goal?fa(pl):'—'}</td><td>${fa(subjPct(s,0))}٪ / ${fa(subjPct(s,4))}٪</td><td>${tot?dur(rem)+(w>1?' ('+dur(Math.round(rem/w))+' در هفته)':''):'نامشخص'}</td><td><button class="btn s" data-a="gl" data-v="${s}">هدف: ${fa(S.subj[s].goal||0)}</button></td></tr>`}).join('');
+const unk=SUBJ.filter(s=>!S.subj[s].chapters.some(c=>c.lessons.length));
+return`<h2>ددلاین: پایان تیر ۱۴۰۶</h2><div class="card"><div class="big">${days>0?fa(days)+' روز':'پایان یافته'}</div><span class="mut">تا ${pdate(DEADLINE)} (حدود ${fa(Math.round(w))} هفته)</span></div>
+<div class="card"><h3>برنامه‌ریزی‌شده در برابر واقعی</h3><div style="overflow-x:auto"><table><tr><th>درس</th><th>فصل‌های دیده‌شده</th><th>هدف تا امروز</th><th>پیشرفت / تسلط</th><th>زمان باقی‌مانده جلسه‌ها</th><th>هدف هفتگی (فصل)</th></tr>${rows}</table></div>
+${unk.length?`<div class="warn">پیش‌بینی دقیق ممکن نیست: برای ${unk.map(esc).join('، ')} هنوز جلسه‌ای ثبت نشده. در بخش دروس تعداد و مدت جلسه‌های ماز را وارد کن.</div>`:''}
+<p class="mut">پیشنهاد: حدود ۴ هفته برای بافر، تعطیلات و امتحانات و چند هفته‌ی پایانی برای مرور تجمعی و آزمون کنار بگذار؛ تمام زمان را به درس جدید ندهد.</p></div>`},
+ds(){const D=S.ds;return`<h2>علم داده و Python</h2><div class="card"><h3>جلسه‌های ثابت</h3><div class="blk fixed"><time>${hm(840)}–${hm(1080)}</time><div>پنجشنبه</div></div><div class="blk fixed"><time>${hm(1140)}–${hm(1350)}</time><div>شنبه</div></div></div>
+<div class="card"><div class="row sp"><h3>موضوع فعلی: ${esc(D.topic)}</h3><button class="btn" data-a="dt">ویرایش موضوع و اهداف</button></div><div class="mut">${esc(D.goals)||'هدف یادگیری‌ای ثبت نشده.'}</div></div>
+<div class="card"><div class="row sp"><h3>تمرین‌ها، پروژه‌ها و خروجی‌ها</h3><button class="btn p" data-a="da">+ مورد</button></div>${D.items.length?D.items.map(i=>`<div class="tk${i.done?' dn':''}"><input type="checkbox" data-c="dg" data-id="${i.id}"${i.done?' checked':''} aria-label="انجام شد"><div class="tt">${esc(i.t)} <span class="b p3">${esc(i.k)}</span></div><button class="btn s d" data-a="dd" data-id="${i.id}">حذف</button></div>`).join(''):'<div class="emp">هنوز موردی نیست. یک تمرین یا پروژه‌ی کوچک اضافه کن.</div>'}<div class="mut">انجام‌شده: ${fa(D.items.filter(i=>i.done).length)} از ${fa(D.items.length)}</div></div>
+<div class="card"><h3>یادداشت‌ها و درس‌های آموخته</h3><textarea data-c="dn" aria-label="یادداشت">${esc(D.notes)}</textarea></div>`},
+exc(){const d=today(),w=wk(d),av=S.exc.filter(e=>e.sc=='D'&&e.date>=w).length,bc=overdue().filter(t=>t.pri==0).length;
+return`<h2>استثناها و پیامد منصفانه</h2>${bc>3?'<div class="warn">بیش از ۳ تسک بحرانی عقب‌افتاده داری. به‌جای فشار بیشتر، حجم کار یا برنامه را کاهش بده و بازنگری کن.</div>':''}
+<div class="card"><p class="mut">قوانین ثابت: مدرسه، علم داده و خواب هرگز قربانی نمی‌شوند. تسک‌های عقب‌افتاده خودکار به فردا نمی‌روند و روزانه حداکثر یک بلوک جبرانی داریم.</p><div class="g">${SC.map(s=>`<div class="card"><h3>${s[1]}</h3>${s[3].map(x=>'<div>• '+x+'</div>').join('')}<button class="btn" style="margin-top:8px" data-a="sc" data-v="${s[0]}">ثبت این اتفاق</button></div>`).join('')}</div></div>
+<div class="card"><h3>پیامدهای پیشنهادی (فقط برای اهمال‌کاری قابل‌اجتناب، این هفته: ${fa(av)} بار)</h3><div>اول: تأمل ۲ دقیقه‌ای · دوم: کار کوچک خانه · سوم: کاهش ۳۰ دقیقه‌ای اسکرین تفریحی فردا · چهارم یا بیشتر: برنامه را بازنگری کن، نه خودت را. هیچ‌وقت خواب، غذا یا تمام تفریح کم نمی‌شود. شمارش با شروع هفته‌ی جدید صفر می‌شود.</div>${av>=4?'<div class="warn">برنامه چند بار شکست خورده؛ زمان‌بندی را در برنامه‌ی هفتگی ساده‌تر کن.</div>':''}</div>
+<div class="card"><h3>سابقه</h3>${S.exc.slice(-8).reverse().map(e=>`<div>${pdate(e.date)} · ${esc((SC.find(s=>s[0]==e.sc)||[0,'رویداد'])[1])}${e.refl?' · '+esc(e.refl):''}${e.cons?' · پیامد: '+esc(e.cons):''}</div>`).join('')||'<span class="mut">موردی ثبت نشده.</span>'}</div>`},
+leisure(){const d=today(),w=wk(d),L=S.leisure.filter(x=>x.date>=w),pl=L.filter(x=>x.planned).reduce((a,x)=>a+x.min,0),un=L.filter(x=>!x.planned).reduce((a,x)=>a+x.min,0),td=S.leisure.filter(x=>x.date==d).reduce((a,x)=>a+x.min,0);
+return`<h2>تفریح و اوقات فراغت</h2>${td>S.set.limit?`<div class="warn">تفریح ثبت‌شده‌ی امروز (${dur(td)}) از سقف دلخواهت (${dur(S.set.limit)}) بیشتر است. این صفحه فقط یادآوری است و برنامه‌های دیگر را کنترل نمی‌کند.</div>`:''}
+<div class="card"><div class="row sp"><div>این هفته: <b>برنامه‌ریزی‌شده ${dur(pl)}</b> · <b>بی‌برنامه ${dur(un)}</b></div><button class="btn p" data-a="lz">+ ثبت</button></div><p class="mut">تفریح پاداش مشروط نیست. فرق بگذار بین «یک فیلم با زمان شروع و پایان» و «سه ساعت اسکرول بی‌برنامه».</p></div>
+<div class="card">${L.length?L.slice().reverse().map(x=>`<div class="tk"><div>${pdate(x.date)} · ${esc(x.type)} · ${dur(x.min)} <span class="b ${x.planned?'p2':'p1'}">${x.planned?'برنامه‌ریزی‌شده':'بی‌برنامه'}</span></div><button class="btn s d" data-a="lzd" data-id="${x.id}">حذف</button></div>`).join(''):'<div class="emp">این هفته چیزی ثبت نشده.</div>'}</div>`},
+review(){const w=wk(today()),R=S.reviews[w]||{},wd=[0,1,2,3,4,5,6].map(i=>add(w,i)),mins=wd.reduce((a,x)=>a+(S.log[x]||0),0),md={full:0,min:0,rec:0,rest:0};wd.forEach(x=>{if(S.ci[x]&&S.ci[x].mode)md[S.ci[x].mode]++});
+const inW=x=>x&&x>=w&&x<=add(w,6),all=SUBJ.flatMap(s=>S.subj[s].chapters.map(c=>({s,c}))),les=all.reduce((a,x)=>a+x.c.lessons.filter(l=>inW(l.at)).length,0),tst=all.reduce((a,x)=>a+x.c.tests.filter(t=>inW(t.d)).length,0),rev=all.reduce((a,x)=>a+(inW(x.c.at[3])?1:0),0),
+tk=S.tasks.filter(t=>inW(t.doneAt)).length,ds=S.ds.items.filter(i=>inW(i.doneAt)),L=S.leisure.filter(x=>inW(x.date)),mis=S.tasks.filter(t=>!t.done&&t.due&&t.due>=w&&t.due<=add(w,6)&&t.due<today());
+const ok=[['حداقل ۵ روز با حالت کامل یا حداقل',md.full+md.min>=5],['هر دو جلسه‌ی علم داده',(R.dsDone||0)>=2],['حداقل ۸۰٪ تسک‌های بحرانی',critRate(w)>=80],['مرور هفتگی انجام شد',!!R.notes],['خواب نسبتاً منظم',R.sleep=='خوب']],n=ok.filter(x=>x[1]).length;
+return`<h2>مرور هفتگی (از ${pdate(w)})</h2><div class="g"><div class="card"><h3>محاسبه‌شده</h3><div>مطالعه‌ی متمرکز: <b>${dur(mins)}</b> (هدف حدود ${dur(S.set.target*6)})</div><div>روزها: کامل ${fa(md.full)} · حداقل ${fa(md.min)} · بازیابی ${fa(md.rec)} · استراحت ${fa(md.rest)}</div><div>جلسه‌های دیده‌شده: ${fa(les)} · آزمون‌ها: ${fa(tst)} · مرورها: ${fa(rev)}</div><div>تسک‌های انجام‌شده: ${fa(tk)}</div><div>خروجی علم داده: ${ds.length?ds.map(i=>esc(i.t)).join('، '):'—'}</div><div>تفریح: برنامه‌ریزی‌شده ${dur(L.filter(x=>x.planned).reduce((a,x)=>a+x.min,0))} · بی‌برنامه ${dur(L.filter(x=>!x.planned).reduce((a,x)=>a+x.min,0))}</div><div>تسک‌های ناتمام با موعد گذشته: ${mis.length?mis.map(t=>esc(t.t)).join('، '):'—'}</div></div>
+<div class="card"><h3>موفقیت هفته: ${fa(n)} از ۵</h3>${ok.map(x=>`<div>${x[1]?'✅':'⬜'} ${x[0]}</div>`).join('')}<p class="mut">کمال لازم نیست؛ ۴ از ۵ هفته‌ی قابل‌قبول است.</p></div></div>
+<div class="card"><h3>ورودی‌های شما</h3><button class="btn p" data-a="rv">ویرایش مرور این هفته</button><div class="mut">جلسه‌های علم داده: ${fa(R.dsDone||0)} · خواب: ${esc(R.sleep||'—')}</div><div>اولویت‌های هفته‌ی بعد: ${[R.p1,R.p2,R.p3].filter(Boolean).map(esc).join(' | ')||'—'}</div><div>${esc(R.notes||'')}</div></div>
+<div class="card"><h3>مرورهای قبلی</h3>${Object.keys(S.reviews).filter(k=>k!=w).sort().reverse().map(k=>`<div>${pdate(k)} · خواب: ${esc(S.reviews[k].sleep||'—')} · ${esc(S.reviews[k].notes||'')}</div>`).join('')||'<span class="mut">هنوز مروری ذخیره نشده.</span>'}</div>`},
+settings(){const s=S.set;return`<h2>تنظیمات و داده‌ها</h2><div class="card"><h3>اهداف و ترجیحات</h3><div class="row"><button class="btn p" data-a="se">ویرایش تنظیمات</button><button class="btn" data-a="theme">تغییر تم</button></div><div class="mut">هدف روزانه: ${dur(s.target)} · سقف تفریح: ${dur(s.limit)} · خواب: ${s.sleep} · بیدار شدن: ${s.wake} → ${s.wakeGoal} (پیشنهاد: هر هفته ۱۵ دقیقه زودتر، فقط وقتی خواب منظم بود)</div></div>
+<div class="card"><h3>پشتیبان‌گیری</h3><div class="row"><button class="btn p" data-a="ex">خروجی JSON</button><label class="btn" style="margin:0">ورود JSON<input type="file" accept=".json,application/json" data-c="im" hidden></label><button class="btn d" data-a="rs">بازنشانی کامل</button></div><p class="mut">داده‌ها فقط در همین مرورگر و همین آدرس سایت ذخیره می‌شوند و بین دستگاه‌ها یا مرورگرها همگام نمی‌شوند. برای انتقال، از خروجی JSON استفاده کن.</p></div>`}};
+function subjPct(s,k){const ch=S.subj[s].chapters;return pc(ch.filter(c=>c.st[k]).length,ch.length)}
+function critRate(w){const t=S.tasks.filter(t=>t.pri==0&&t.due>=w&&t.due<=add(w,6));return t.length?pc(t.filter(x=>x.done).length,t.length):100}
+function conflicts(){const r=[];for(let d=0;d<7;d++){const b=S.blocks.filter(x=>x.day==d);for(let i=0;i<b.length;i++)for(let j=i+1;j<b.length;j++)if(tm(b[i].s)<tm(b[j].e)&&tm(b[j].s)<tm(b[i].e))r.push(DAYS[d]+': «'+b[i].title+'» و «'+b[j].title+'»')}return r}
+const fnd=(a,id)=>a.find(x=>x.id==id);
+function blockForm(b){const o=b||{day:S.ui.day=='all'||S.ui.day==null?didx(today()):S.ui.day,s:'16:00',e:'17:00',title:'',type:'study'};
+form(b?'ویرایش بلوک':'بلوک جدید',[{k:'title',l:'عنوان',v:o.title},{k:'day',l:'روز',v:o.day,o:DAYS.map((n,i)=>[i,n])},{k:'s',l:'شروع',t:'time',v:o.s},{k:'e',l:'پایان',t:'time',v:o.e},{k:'type',l:'نوع',v:o.type,o:Object.entries(TYPES).filter(x=>x[0]!='fixed').map(x=>[x[0],x[1]])}],v=>{
+if(!v.title.trim())return'عنوان لازم است.';if(tm(v.s)>=tm(v.e))return'ساعت پایان باید بعد از شروع باشد.';const x={...(b||{id:uid()}),title:v.title.trim(),day:+v.day,s:v.s,e:v.e,type:v.type};
+const c=S.blocks.find(y=>y.id!=x.id&&y.day==x.day&&tm(x.s)<tm(y.e)&&tm(y.s)<tm(x.e));if(c)return'تداخل با «'+c.title+'» ('+c.s+'–'+c.e+')'+(c.locked?' که قفل است. زمان دیگری انتخاب کن.':'. زمان را تغییر بده.');
+if(b)Object.assign(b,x);else S.blocks.push(x)})}
+function taskForm(t){const o=t||{t:'',desc:'',cat:'',due:today(),dur:S.set.dur,pri:1,fb:'',cond:'',pre:''};
+form(t?'ویرایش تسک':'تسک جدید',[{k:'t',l:'عنوان',v:o.t},{k:'desc',l:'توضیح (اختیاری)',v:o.desc},{k:'cat',l:'دسته/درس',v:o.cat,o:['',...SUBJ,'علم داده','مدرسه','شخصی','برنامه‌ریزی']},{k:'due',l:'موعد',t:'date',v:o.due},{k:'dur',l:'مدت (دقیقه)',t:'number',v:o.dur},{k:'pri',l:'اولویت',v:o.pri,o:PRI.map((p,i)=>[i,p])},{k:'cond',l:'شرط تکمیل',v:o.cond},{k:'fb',l:'نسخه‌ی کوچک‌تر',v:o.fb},{k:'pre',l:'پیش‌نیاز',v:o.pre}],v=>{
+if(!v.t.trim())return'عنوان لازم است.';const x={...(t||{id:uid(),done:0}),...v,t:v.t.trim(),dur:+v.dur||0,pri:+v.pri};if(t)Object.assign(t,x);else S.tasks.push(x)})}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,v=el.dataset.v,id=el.dataset.id,d=today(),U=S.ui;
+const ch=()=>S.subj[U.subj].chapters,c=()=>fnd(ch(),id),go=(f)=>{f();save();render()};
+switch(a){
+case'tab':go(()=>U.tab=v);scrollTo(0,0);break;case'theme':go(()=>S.theme=S.theme=='dark'?'light':'dark');break;
+case'lg':go(()=>S.log[d]=(S.log[d]||0)+ +v);break;
+case'lgc':form('ثبت زمان مطالعه',[{k:'m',l:'دقیقه‌ی مطالعه‌ی متمرکز امروز (کل)',t:'number',v:S.log[d]||0}],x=>{S.log[d]=Math.max(0,+x.m||0)});break;
+case'ci':{const c0=S.ci[d]||{};form('چک‌این روزانه',[{k:'avail',l:'زمان آزاد امروز',v:c0.avail||''},{k:'school',l:'مهم‌ترین تعهد مدرسه',v:c0.school||''},{k:'top',l:'مهم‌ترین تسک درسی',v:c0.top||''},{k:'ds',l:'تعهد علم داده',v:c0.ds||''},{k:'leis',l:'تفریح برنامه‌ریزی‌شده',v:c0.leis||''},{k:'dist',l:'حواس‌پرتی محتمل',v:c0.dist||''},{k:'energy',l:'انرژی',v:c0.energy||'متوسط',o:['کم','متوسط','زیاد']},{k:'mode',l:'حالت امروز',v:mode(d),o:Object.entries(MODES).map(([k,x])=>[k,x[0]])}],x=>{S.ci[d]={...c0,...x}});break}
+case'day':go(()=>U.day=v=='all'?'all':+v);break;case'ba':blockForm();break;case'be':blockForm(fnd(S.blocks,id));break;
+case'bd':if(confirm('این بلوک حذف شود؟'))go(()=>S.blocks=S.blocks.filter(b=>b.id!=id));break;
+case'sj':go(()=>U.subj=v);break;
+case'ca':form('فصل جدید',[{k:'n',l:'نام فصل',v:'فصل '+fa(ch().length+1)}],x=>{if(!x.n.trim())return'نام لازم است.';ch().push({id:uid(),n:x.n.trim(),lessons:[],st:[0,0,0,0,0],at:[],tests:[]})});break;
+case'cr':form('تغییر نام',[{k:'n',l:'نام',v:c().n}],x=>{if(!x.n.trim())return'نام لازم است.';c().n=x.n.trim()});break;
+case'cd':if(confirm('این فصل و تمام سابقه‌اش حذف شود؟'))go(()=>S.subj[U.subj].chapters=ch().filter(x=>x.id!=id));break;
+case'cu':case'cdn':go(()=>{const A=ch(),i=A.findIndex(x=>x.id==id),j=a=='cu'?i-1:i+1;if(j>=0&&j<A.length)[A[i],A[j]]=[A[j],A[i]]});break;
+case'la':form('جلسه‌ی جدید',[{k:'n',l:'نام جلسه',v:'جلسه '+fa(c().lessons.length+1)},{k:'min',l:'مدت تخمینی (۹۰ تا ۱۸۰ دقیقه)',t:'number',v:120}],x=>{if(!x.n.trim())return'نام لازم است.';c().lessons.push({id:uid(),n:x.n.trim(),min:+x.min||0,done:0})});break;
+case'le':{const l=fnd(c().lessons,el.dataset.l);form('ویرایش جلسه',[{k:'n',l:'نام',v:l.n},{k:'min',l:'مدت (دقیقه)',t:'number',v:l.min}],x=>{if(!x.n.trim())return'نام لازم است.';l.n=x.n.trim();l.min=+x.min||0});break}
+case'ld':if(confirm('این جلسه حذف شود؟'))go(()=>{c().lessons=c().lessons.filter(l=>l.id!=el.dataset.l)});break;
+case'ta2':form('نتیجه‌ی آزمون',[{k:'s',l:'درصد پاسخ درست',t:'number',v:80}],x=>{const s=+x.s;if(s>100)return'عدد بین ۰ و ۱۰۰ وارد کن.';c().tests.push({s,d})});break;
+case'gl':form('هدف هفتگی '+v,[{k:'g',l:'تعداد فصلی که هر هفته باید ویدیویش دیده شود',t:'number',v:S.subj[v].goal||0}],x=>{S.subj[v].goal=+x.g||0});break;
+case'tf':go(()=>U.tf=v);break;case'tn':taskForm();break;case'te':taskForm(fnd(S.tasks,id));break;
+case'tp':go(()=>{const t=fnd(S.tasks,id);t.due=add(t.due||d,1);toast('به '+pdate(t.due)+' موکول شد.')});break;
+case'td':if(confirm('این تسک حذف شود؟'))go(()=>S.tasks=S.tasks.filter(t=>t.id!=id));break;
+case'dt':form('موضوع علم داده',[{k:'topic',l:'موضوع فعلی',v:S.ds.topic},{k:'goals',l:'اهداف یادگیری',v:S.ds.goals,a:1}],x=>{S.ds.topic=x.topic.trim()||'Python';S.ds.goals=x.goals});break;
+case'da':form('مورد جدید',[{k:'t',l:'عنوان',v:''},{k:'k',l:'نوع',v:'تمرین',o:['تمرین','پروژه','خروجی','موضوع آینده']}],x=>{if(!x.t.trim())return'عنوان لازم است.';S.ds.items.push({id:uid(),t:x.t.trim(),k:x.k,done:0})});break;
+case'dd':go(()=>S.ds.items=S.ds.items.filter(i=>i.id!=id));break;
+case'sc':{const s=SC.find(x=>x[0]==v);form('ثبت: '+s[1],[{k:'refl',l:v=='D'?'تأمل کوتاه: چه چیزی باعث شد؟':'توضیح کوتاه (اختیاری)',v:''},...(v=='D'?[{k:'cons',l:'پیامد ملایم (اختیاری)',v:'',o:['','کار کوچک خانه','کاهش ۳۰ دقیقه‌ای اسکرین فردا','یک تسک بازیابی کوتاه']}]:[]),...(s[2]?[{k:'ap',l:'اعمال حالت پیشنهادی ('+MODES[s[2]][0]+') برای امروز؟',v:'1',o:[['1','بله'],['0','نه']]}]:[])],x=>{S.exc.push({date:d,sc:v,refl:x.refl,cons:x.cons||''});if(x.ap=='1'){S.ci[d]={...(S.ci[d]||{}),mode:s[2]}}toast(v=='D'?'ثبت شد. بدون سرزنش؛ تسک بحرانی را کوچک کن و ادامه بده.':'ثبت شد. برنامه‌ی امروز را بازنگری کن؛ چیزی خودکار جابه‌جا نشد.')});break}
+case'lz':form('ثبت تفریح',[{k:'type',l:'نوع',v:LT[0],o:LT},{k:'min',l:'مدت (دقیقه)',t:'number',v:60},{k:'planned',l:'آیا برنامه‌ریزی‌شده بود؟',v:'1',o:[['1','بله، آگاهانه'],['0','نه، زمان رفته']]}],x=>{if(!(+x.min>0))return'مدت را وارد کن.';S.leisure.push({id:uid(),date:d,type:x.type,min:+x.min,planned:x.planned=='1'})});break;
+case'lzd':go(()=>S.leisure=S.leisure.filter(x=>x.id!=id));break;
+case'rv':{const w=wk(d),R=S.reviews[w]||{};form('مرور هفته',[{k:'dsDone',l:'تعداد جلسه‌های علم داده‌ی انجام‌شده',t:'number',v:R.dsDone||0},{k:'sleep',l:'منظم بودن خواب',v:R.sleep||'متوسط',o:['خوب','متوسط','نامنظم']},{k:'p1',l:'اولویت ۱ هفته‌ی بعد',v:R.p1||''},{k:'p2',l:'اولویت ۲',v:R.p2||''},{k:'p3',l:'اولویت ۳',v:R.p3||''},{k:'notes',l:'یادداشت: علت ناتمام‌ها و تعدیل برنامه',v:R.notes||'',a:1}],x=>{S.reviews[w]={...x,dsDone:+x.dsDone||0}});break}
+case'se':{const s=S.set;form('تنظیمات',[{k:'target',l:'هدف روزانه (دقیقه)',t:'number',v:s.target},{k:'limit',l:'سقف دلخواه تفریح روزانه (دقیقه)',t:'number',v:s.limit},{k:'sleep',l:'ساعت خواب فعلی',t:'time',v:s.sleep},{k:'wake',l:'ساعت بیدار شدن فعلی',t:'time',v:s.wake},{k:'wakeGoal',l:'هدف بیدار شدن',t:'time',v:s.wakeGoal},{k:'dur',l:'مدت پیش‌فرض تسک (دقیقه)',t:'number',v:s.dur}],x=>{if(!(+x.target>0))return'هدف باید بیشتر از صفر باشد.';Object.assign(s,x,{target:+x.target,limit:+x.limit||0,dur:+x.dur||45})});break}
+case'ex':{const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download='study-backup-'+today()+'.json';l.click();setTimeout(()=>URL.revokeObjectURL(u),500);toast('فایل پشتیبان دانلود شد.');break}
+case'rs':if(confirm('همه‌ی داده‌ها پاک می‌شود. ادامه می‌دهی؟')&&prompt('برای تأیید نهایی کلمه‌ی «بازنشانی» را بنویس.')==='بازنشانی'){S=def();save();render();toast('برنامه بازنشانی شد.')}break}});
+document.addEventListener('change',e=>{const el=e.target,c=el.dataset.c;if(!c)return;const id=el.dataset.id,d=today(),go=f=>{f();save();render()},ch=()=>fnd(S.subj[S.ui.subj].chapters,id);
+switch(c){case'tg':go(()=>{const t=fnd(S.tasks,id);t.done=el.checked?1:0;t.doneAt=el.checked?d:null});break;
+case'mode':go(()=>S.ci[d]={...(S.ci[d]||{}),mode:el.value});break;case'fp':go(()=>S.ui.fp=el.value);break;case'fc':go(()=>S.ui.fc=el.value);break;
+case'st':{const x=ch(),k=+el.dataset.k;if(k==4&&el.checked&&!x.tests.some(t=>t.s>=80)&&!confirm('هنوز آزمونی با ۸۰٪ یا بیشتر ثبت نشده. باز هم «مسلط شد» ثبت شود؟')){render();break}go(()=>{x.st[k]=el.checked?1:0;x.at[k]=el.checked?d:null});break}
+case'ls':go(()=>{const l=fnd(ch().lessons,el.dataset.l);l.done=el.checked?1:0;l.at=el.checked?d:null});break;
+case'dg':go(()=>{const i=fnd(S.ds.items,id);i.done=el.checked?1:0;i.doneAt=el.checked?d:null});break;
+case'dn':S.ds.notes=el.value;save();break;
+case'im':{const f=el.files[0];if(!f)break;const r=new FileReader();r.onload=()=>{let p;try{p=JSON.parse(r.result);if(!p||typeof p!=='object'||!Array.isArray(p.tasks)||!p.subj||!p.set)throw 0}catch(x){toast('فایل نامعتبر است: این فایل پشتیبان همین برنامه نیست.');return}
+if(confirm('داده‌های فعلی با این فایل جایگزین شود؟ (انصراف = گزینه‌ی ادغام)')){S=norm(p)}else if(confirm('به‌جای جایگزینی، تسک‌ها، تفریح، استثناها و مرورها با داده‌ی فعلی ادغام شوند؟')){const q=norm(p);const m=(a,b)=>[...a,...b.filter(x=>!a.some(y=>y.id&&y.id==x.id))];S.tasks=m(S.tasks,q.tasks);S.leisure=m(S.leisure,q.leisure);S.exc=[...S.exc,...q.exc.filter(x=>!S.exc.some(y=>JSON.stringify(y)==JSON.stringify(x)))];S.reviews={...q.reviews,...S.reviews}}else return;save();render();toast('داده‌ها وارد شدند.')};r.readAsText(f);el.value='';break}}});
+document.addEventListener('submit',e=>{const f=e.target;if(f.dataset.f!=='qa')return;e.preventDefault();const t=f.t.value.trim();if(!t)return;S.tasks.push({id:uid(),t,desc:'',cat:'',due:today(),dur:S.set.dur,pri:+f.pri.value,done:0,fb:'',cond:'',pre:''});save();render()});
+load();render();
+</script>
+</body>
+</html>
